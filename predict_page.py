@@ -6,25 +6,23 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 def set_bg_hack_url():
-    '''
-    A function to unpack an image from url and set as bg.
-    Returns
-    -------
-    The background.
-    '''
-        
+   
     st.markdown(
          f"""
          <style>
          .stApp {{
-             background: url("https://www.fiaregion1.com/wp-content/uploads/2016/10/CO2-emissions-reduction-Converted.jpg");
-             background-size: cover
+            background: url("https://www.fiaregion1.com/wp-content/uploads/2016/10/CO2-emissions-reduction-Converted.jpg");
+            background-size: cover
          }}
 
          
-         .e1f1d6gn0 {{
+         /*.e1f1d6gn0 {{
                 
-                 margin-left: 300px;
+            margin-left: 300px;
+        }}*/
+        
+        .ezrtsby2{{
+            background-color: rgba(0,0,0,0)
         }}
 
          
@@ -59,25 +57,16 @@ with open('Decisiontree.pkl', 'rb') as model_file:
 X_train = pd.read_csv('X_train.csv')
 #normalized_dataq = pd.read_csv('normalized.csv')
 
+def topic():
+    st.markdown("<h1 style='color: green; text-align: center;'>CO2 Emission Prediction</h1>", unsafe_allow_html=True)
+    st.markdown("<h2 style='font-size: 28px; text-align: center;'>We need more info</h2>", unsafe_allow_html=True)
 
-#scaler.fit(normalized_dataq)  # Fit the scaler with X_train
-
-
-# def denormalize_prediction(prediction, scaler):
-#     # Reshape the prediction to match the scaler's expected input shape
-#     prediction = prediction.reshape(-1, 1)
-
-#     # Inverse transform the prediction to get the denormalized value
-#     denormalized_prediction = scaler.inverse_transform(prediction)
-
-#     return denormalized_prediction[0][0]
+topic()
 
 
-
+#create a funtion to to do all the user interaction
 def show_predict():
-    st.title('CO2 emission prediction')
     
-    st.write("""### We need more info""")
 
  
     
@@ -89,12 +78,6 @@ def show_predict():
        'MITSUBISHI', 'NISSAN', 'PORSCHE', 'RAM', 'ROLLS-ROYCE', 'SCION',
        'SMART', 'SRT', 'SUBARU', 'TOYOTA', 'VOLKSWAGEN', 'VOLVO')
     
-    
-    Vehicle_classes = ('COMPACT', 'SUV - SMALL', 'MID-SIZE', 'TWO-SEATER', 'MINICOMPACT',
-       'SUBCOMPACT', 'FULL-SIZE', 'STATION WAGON - SMALL',
-       'SUV - STANDARD', 'VAN - CARGO', 'VAN - PASSENGER',
-       'PICKUP TRUCK - STANDARD', 'SPECIAL PURPOSE VEHICLE',
-       'PICKUP TRUCK - SMALL', 'MINIVAN', 'STATION WAGON - MID-SIZE')
     
     Transmissions = ('AS5', 'M6', 'AV7', 'AS6', 'AM7', 'AM8', 'AS9', 'AM9', 'AS10',
        'AM6', 'A8', 'A6', 'M7', 'AV8', 'AS8', 'A7', 'AS7', 'A9', 'AV',
@@ -121,11 +104,7 @@ def show_predict():
         loaded_model = loaded_model_dt        
 
     Make = st.selectbox("Make(Brand)", Makes)
-    
-    #Model = st.text_input("Enter the Model of vehicel")
-  
-    #Class = st.selectbox("Vehicle class", Vehicle_classes)
-    
+
     Transmission = st.selectbox("Gear Transmission", Transmissions)
     
     Fuel_type = st.selectbox("Type of fuel used", Fuel_types)
@@ -192,11 +171,7 @@ def show_predict():
         # The 'predictions' variable now contains the predicted values for the user input
         st.write(f"Predicted CO2 Emission: {denormalized_prediction[0]}")
 
-        # Optionally, you can denormalize the prediction using the scaler
-        # denormalized_prediction = denormalize_prediction(predictions, scaler)
-
-        # # Display the denormalized CO2 emission
-        # st.write(f"Predicted CO2 Emission (Denormalized): {denormalized_prediction}")
+    
 
 
 show_predict()       
