@@ -4,13 +4,56 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+
+def set_bg_hack_url():
+    '''
+    A function to unpack an image from url and set as bg.
+    Returns
+    -------
+    The background.
+    '''
+        
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background: url("https://www.fiaregion1.com/wp-content/uploads/2016/10/CO2-emissions-reduction-Converted.jpg");
+             background-size: cover
+         }}
+
+         
+         .e1f1d6gn0 {{
+                
+                 margin-left: 300px;
+        }}
+
+         
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+#
+set_bg_hack_url()
+
+st.markdown("",unsafe_allow_html=True)
+
 scaler = MinMaxScaler(feature_range=(0, 70)) 
 
-#loading the saved model
-with open('random_forest_model.pkl', 'rb') as model_file:
-    loaded_model = pk.load(model_file)
 
-data = loaded_model
+#loading the saved model
+with open('svm_model.pkl', 'rb') as model_file:
+   loaded_model_svm = pk.load(model_file)
+
+with open('random_forst_model.pkl', 'rb') as model_file:
+   loaded_model_rf = pk.load(model_file)
+
+with open('leaniermodel.pkl', 'rb') as model_file:
+   loaded_model_lr = pk.load(model_file)
+
+with open('Decisiontree.pkl', 'rb') as model_file:
+   loaded_model_dt = pk.load(model_file)
+
+#data = loaded_model_svm
 
 # Define X_train globally
 X_train = pd.read_csv('X_train.csv')
@@ -35,6 +78,8 @@ def show_predict():
     st.title('CO2 emission prediction')
     
     st.write("""### We need more info""")
+
+ 
     
     Makes= ('ACURA', 'ALFA ROMEO', 'ASTON MARTIN', 'AUDI', 'BENTLEY', 'BMW',
        'BUGATTI', 'BUICK', 'CADILLAC', 'CHEVROLET', 'CHRYSLER', 'DODGE',
@@ -56,15 +101,30 @@ def show_predict():
        'A10', 'A4', 'M5', 'A5', 'AV6', 'AV10', 'AS4', 'AM5')
     
     Fuel_types = ('D', 'E', 'N', 'X', 'Z')
+
+    preferd_model =('Support vector Machine' , 'Random Forest' , 'Linear regression' ,'Decision tree')
     
     Cylinders_types = (4 ,  6 , 12 ,  8 , 14 , 10 ,  5 , 16 ,  3 )
-    
+
+    ML_model = st.selectbox("Choose prefered model" , preferd_model)
+
+    if ML_model == 'Support vector Machine':
+        loaded_model = loaded_model_svm
+
+    elif ML_model == 'Random Forest':
+        loaded_model = loaded_model_rf
+
+    elif ML_model == 'Linear regression':
+        loaded_model = loaded_model_lr 
+
+    elif ML_model == 'Decision tree':
+        loaded_model = loaded_model_dt        
 
     Make = st.selectbox("Make(Brand)", Makes)
     
-    Model = st.text_input("Enter the Model of vehicel")
+    #Model = st.text_input("Enter the Model of vehicel")
   
-    Class = st.selectbox("Vehicle class", Vehicle_classes)
+    #Class = st.selectbox("Vehicle class", Vehicle_classes)
     
     Transmission = st.selectbox("Gear Transmission", Transmissions)
     
@@ -83,24 +143,23 @@ def show_predict():
     
     if ok:
         # Create a dictionary with user input
-        categorical_columns = ['Make', 'Model', 'Vehicle Class', 'Transmission', 'Fuel Type']
+        categorical_columns = ['Make','Transmission', 'Fuel Type']
 
-        user_input = {
+        user_input= {
             'Make': [Make],
-            'Model': [Model],
-            'Vehicle Class': [Class],
             'Engine Size(L)': [Engine_Size],
             'Cylinders': [Cylinders_type],
             'Transmission': [Transmission],
             'Fuel Type': [Fuel_type],
             'Fuel Consumption City (L/100 km)': [Fuel_Consumption_City],
             'Fuel Consumption Hwy (L/100 km)': [Fuel_Consumption_Hwy],
+            
         }
 
         # Create a DataFrame from the user input
         user_input_df = pd.DataFrame(user_input)
 
-        # One-hot encode the categorical variables to match the model's columns
+        # One-hot encode the categorical variables to match X_train columns
         user_input_encoded = pd.get_dummies(user_input_df, columns=categorical_columns)
 
         # Initialize the user input DataFrame with all zeros and columns from X_train
@@ -113,19 +172,31 @@ def show_predict():
 
         # Calculate 'Fuel Consumption Comb (L/100 km)' based on 'Fuel Consumption City (L/100 km)' and 'Fuel Consumption Hwy (L/100 km)'
         user_input_for_prediction['Fuel Consumption Comb (L/100 km)'] = (0.55 * user_input_for_prediction['Fuel Consumption City (L/100 km)'] +
-                                                                      0.45 * user_input_for_prediction['Fuel Consumption Hwy (L/100 km)'])
+                                                                    0.45 * user_input_for_prediction['Fuel Consumption Hwy (L/100 km)'])
 
+        # Calculate 'Fuel Consumption Comb (mpg)' based on 'Fuel Consumption Comb (L/100 km)'
         user_input_for_prediction['Fuel Consumption Comb (mpg)'] = 282.481/ user_input_for_prediction['Fuel Consumption Comb (L/100 km)']
 
-        
         # Make predictions
         predictions = loaded_model.predict(user_input_for_prediction)
 
         # The 'predictions' variable now contains the predicted values for the user input
-        st.write(f"Predicted CO2 Emission: {predictions[0]}")
+        print(predictions)
+
+        #denormalized_userinput = scaler.inverse_transform(predictions)
+        #print(denormalized_userinput)
+
+        denormalized_prediction = (predictions*426.0)/70 + 96.0
+
+
+        # The 'predictions' variable now contains the predicted values for the user input
+        st.write(f"Predicted CO2 Emission: {denormalized_prediction[0]}")
 
         # Optionally, you can denormalize the prediction using the scaler
         # denormalized_prediction = denormalize_prediction(predictions, scaler)
 
         # # Display the denormalized CO2 emission
         # st.write(f"Predicted CO2 Emission (Denormalized): {denormalized_prediction}")
+
+
+show_predict()       
