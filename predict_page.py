@@ -38,7 +38,7 @@ st.markdown("",unsafe_allow_html=True)
 scaler = MinMaxScaler(feature_range=(0, 70)) 
 
 
-#loading the saved model
+#loading all the saved model 
 with open('svm_model.pkl', 'rb') as model_file:
    loaded_model_svm = pk.load(model_file)
 
@@ -118,7 +118,7 @@ def show_predict():
     
     Fuel_Consumption_Hwy = st.number_input("Fuel Consumption Highway (L/100 km)", min_value=0.0, max_value=30.0, step=0.1)
     
-    ok = st.button('calculate CO2 emission')
+    ok = st.button('Click to calculate')
     
     if ok:
         # Create a dictionary with user input
@@ -171,7 +171,8 @@ def show_predict():
         # The 'predictions' variable now contains the predicted values for the user input
         st.write(f"Predicted CO2 Emission: {denormalized_prediction[0]}")
 
-    
-
 
 show_predict()       
+
+
+
