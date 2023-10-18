@@ -1,0 +1,2 @@
+D:/Datasets/d/Prediction[[:space:]]App/X_train.csv filter=lfs diff=lfs merge=lfs -text
+D:/Datasets/d/Prediction[[:space:]]App/random_forst_model.pkl filter=lfs diff=lfs merge=lfs -text
