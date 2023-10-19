@@ -2,7 +2,7 @@ import streamlit as st
 import pickle as pk
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
+#from sklearn.preprocessing import MinMaxScaler
 
 
 def set_bg_hack_url():
@@ -35,7 +35,7 @@ set_bg_hack_url()
 
 st.markdown("",unsafe_allow_html=True)
 
-scaler = MinMaxScaler(feature_range=(0, 70)) 
+##scaler = MinMaxScaler(feature_range=(0, 70)) 
 
 
 
@@ -109,7 +109,7 @@ def show_predict():
     Fuel_types = ('Super petrol', 'Diesel', 'Ethanol', 'Natural gas', 'Petrol')
 
     
-    #Cylinders_types = (4 ,  6 , 12 ,  8 , 14 , 10 ,  5 , 16 ,  3 )
+    #Cylinders_types = (4 ,  6 , 12 ,  8 , 14 , 10 ,  5 , 16 ,  3 )ijk
 
     
 
