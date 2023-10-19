@@ -11,7 +11,7 @@ def set_bg_hack_url():
          f"""
          <style>
          .stApp {{
-            background: url("https://www.fiaregion1.com/wp-content/uploads/2016/10/CO2-emissions-reduction-Converted.jpg");
+            background: url("");
             background-size: cover
          }}
 
@@ -38,6 +38,7 @@ st.markdown("",unsafe_allow_html=True)
 scaler = MinMaxScaler(feature_range=(0, 70)) 
 
 
+
 #loading all the saved model 
 with open('svm_model.pkl', 'rb') as model_file:
    loaded_model_svm = pk.load(model_file)
@@ -52,13 +53,35 @@ with open('Decisiontree.pkl', 'rb') as model_file:
    loaded_model_dt = pk.load(model_file)
 
 #data = loaded_model_svm
+preferd_model =('Support vector Machine' , 'Random Forest' , 'Linear regression' ,'Decision tree Model')
+
+# Add a sidebar
+with st.sidebar:
+    st.markdown("<h1 style='color: green; text-align: center;  margin-top: -30px;'>CO2 Emission</h1>", unsafe_allow_html=True)
+    
+    # Add an image to the sidebar
+    st.image("https://png.pngtree.com/png-vector/20220513/ourmid/pngtree-ecological-stop-co2-emissions-sign-on-white-background-png-image_4595665.png", use_column_width=True)
+    
+    # Add a radio button to select the ML model
+    st.markdown("<h3 style='text-align: center; color: green; margin-bottom: -50px;'>Choose your preferred model:</h3>", unsafe_allow_html=True)
+    ML_model = st.radio("", preferd_model)
+    
+    if ML_model == 'Support vector Machine':
+        loaded_model = loaded_model_svm
+    elif ML_model == 'Random Forest':
+        loaded_model = loaded_model_rf
+    elif ML_model == 'Linear regression':
+        loaded_model = loaded_model_lr
+    elif ML_model == 'Decision tree Model':
+        loaded_model = loaded_model_dt
+
 
 # Define X_train globally
 X_train = pd.read_csv('X_train.csv')
 #normalized_dataq = pd.read_csv('normalized.csv')
 
 def topic():
-    st.markdown("<h1 style='color: green; text-align: center;'>CO2 Emission Prediction</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='color: green; text-align: center; '>CO2 Emission Prediction</h1>", unsafe_allow_html=True)
     st.markdown("<h2 style='font-size: 28px; text-align: center;'>We need more info</h2>", unsafe_allow_html=True)
 
 topic()
@@ -85,31 +108,19 @@ def show_predict():
     
     Fuel_types = ('D', 'E', 'N', 'X', 'Z')
 
-    preferd_model =('Support vector Machine' , 'Random Forest' , 'Linear regression' ,'Decision tree')
     
-    Cylinders_types = (4 ,  6 , 12 ,  8 , 14 , 10 ,  5 , 16 ,  3 )
+    #Cylinders_types = (4 ,  6 , 12 ,  8 , 14 , 10 ,  5 , 16 ,  3 )
 
-    ML_model = st.selectbox("Choose prefered model" , preferd_model)
-
-    if ML_model == 'Support vector Machine':
-        loaded_model = loaded_model_svm
-
-    elif ML_model == 'Random Forest':
-        loaded_model = loaded_model_rf
-
-    elif ML_model == 'Linear regression':
-        loaded_model = loaded_model_lr 
-
-    elif ML_model == 'Decision tree':
-        loaded_model = loaded_model_dt        
+    
 
     Make = st.selectbox("Make(Brand)", Makes)
 
     Transmission = st.selectbox("Gear Transmission", Transmissions)
     
-    Fuel_type = st.selectbox("Type of fuel used", Fuel_types)
+    st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)    
+    Fuel_type_radio = st.radio("Type of fuel used (Radio Buttons)", Fuel_types)
     
-    Cylinders_type = st.selectbox("Number of cylinders used", Cylinders_types)
+    Cylinders_type = st.slider("Number of cylinders used", 3, 16, step=1)
 
     # Add a number input box
     Engine_Size = st.number_input("Enter Engine Size in Liters", min_value=0.0, max_value=10.0, step=0.1)
@@ -129,7 +140,7 @@ def show_predict():
             'Engine Size(L)': [Engine_Size],
             'Cylinders': [Cylinders_type],
             'Transmission': [Transmission],
-            'Fuel Type': [Fuel_type],
+            'Fuel Type': [Fuel_type_radio],
             'Fuel Consumption City (L/100 km)': [Fuel_Consumption_City],
             'Fuel Consumption Hwy (L/100 km)': [Fuel_Consumption_Hwy],
             
