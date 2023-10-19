@@ -53,7 +53,7 @@ with open('Decisiontree.pkl', 'rb') as model_file:
    loaded_model_dt = pk.load(model_file)
 
 #data = loaded_model_svm
-preferd_model =('Support vector Machine' , 'Random Forest' , 'Linear regression' ,'Decision tree Model')
+preferd_model =('Decision tree Regression','Random Forest regressor' , 'Support vector Machine' , 'Linear regression'  )
 
 # Add a sidebar
 with st.sidebar:
@@ -68,11 +68,11 @@ with st.sidebar:
     
     if ML_model == 'Support vector Machine':
         loaded_model = loaded_model_svm
-    elif ML_model == 'Random Forest':
+    elif ML_model == 'Random Forest regressor':
         loaded_model = loaded_model_rf
     elif ML_model == 'Linear regression':
         loaded_model = loaded_model_lr
-    elif ML_model == 'Decision tree Model':
+    elif ML_model == 'Decision tree Regression':
         loaded_model = loaded_model_dt
 
 
@@ -106,7 +106,7 @@ def show_predict():
        'AM6', 'A8', 'A6', 'M7', 'AV8', 'AS8', 'A7', 'AS7', 'A9', 'AV',
        'A10', 'A4', 'M5', 'A5', 'AV6', 'AV10', 'AS4', 'AM5')
     
-    Fuel_types = ('D', 'E', 'N', 'X', 'Z')
+    Fuel_types = ('Super petrol', 'Diesel', 'Ethanol', 'Natural gas', 'Petrol')
 
     
     #Cylinders_types = (4 ,  6 , 12 ,  8 , 14 , 10 ,  5 , 16 ,  3 )
@@ -119,15 +119,31 @@ def show_predict():
     
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)    
     Fuel_type_radio = st.radio("Type of fuel used (Radio Buttons)", Fuel_types)
+
+    if Fuel_type_radio == 'Super petrol':
+        Fuel_type_radio = 'Z'
+
+    elif Fuel_type_radio == 'Diesel':
+        Fuel_type_radio = 'D'
+
+    elif Fuel_type_radio == 'Ethanol':
+        Fuel_type_radio = 'E'      
+
+    elif Fuel_type_radio == 'Natural gas':
+        Fuel_type_radio = 'N'
+
+    elif Fuel_type_radio == 'Petrol':
+        Fuel_type_radio = 'X'        
+
     
     Cylinders_type = st.slider("Number of cylinders used", 3, 16, step=1)
 
     # Add a number input box
     Engine_Size = st.number_input("Enter Engine Size in Liters", min_value=0.0, max_value=10.0, step=0.1)
     
-    Fuel_Consumption_City = st.number_input("Fuel Consumption City (L/100 km)", min_value=0.0, max_value=40.0, step=0.1)
+    Fuel_Consumption_City = st.number_input("Fuel Consumption City (L/100 km)", min_value=1.0, max_value=40.0, step=0.1)
     
-    Fuel_Consumption_Hwy = st.number_input("Fuel Consumption Highway (L/100 km)", min_value=0.0, max_value=30.0, step=0.1)
+    Fuel_Consumption_Hwy = st.number_input("Fuel Consumption Highway (L/100 km)", min_value=1.0, max_value=30.0, step=0.1)
     
     ok = st.button('Click to calculate')
     
