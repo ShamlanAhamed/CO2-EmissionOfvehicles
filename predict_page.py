@@ -234,8 +234,6 @@ def show_predict():
         })
 
         st.session_state.previous_predictions = previous_predictions
-        
-        # CO2 Emission level (you can replace this with actual data)
 
         # CO2 Emission level (you can replace this with actual data)
         co2_emission = denormalized_prediction[0]
