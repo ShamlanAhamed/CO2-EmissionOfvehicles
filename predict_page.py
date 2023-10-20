@@ -85,6 +85,7 @@ def topic():
     #st.markdown("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>", unsafe_allow_html=True)
     st.markdown("<h1 style='color: green; text-align: center; '>CO2 Emission Prediction</h1>", unsafe_allow_html=True)
     st.markdown("<h2 style='font-size: 28px; text-align: center;'>We need more info</h2>", unsafe_allow_html=True)
+    
 
 topic()
 
@@ -151,6 +152,22 @@ def show_predict():
         
     Fuel_Consumption_Hwy = st.number_input("Fuel Consumption Highway (L/100 km)", min_value=1.0, max_value=30.0, step=0.1)
     
+    m = st.markdown("""
+        <style>
+        div.stButton > button:first-child {
+            background-color: red;
+            color:#ffffff;
+        }
+        div.stButton > button:hover {
+            background-color: #00ff00;
+            color:#ff0000;
+            }
+        div.stButton{
+            display: flex;
+            justify-content: center;
+        }
+        </style>""", unsafe_allow_html=True)
+    
     ok = st.button('Click to calculate')
     
     # Create a container to hold previous predictions and graphs
@@ -212,7 +229,8 @@ def show_predict():
         previous_predictions.append({
             'Make': Make,
             'CO2 Emission': denormalized_prediction[0],
-            'Name':NameO
+            'Name':NameO,
+            'Model Name':ML_model
         })
 
         st.session_state.previous_predictions = previous_predictions
@@ -247,6 +265,16 @@ def show_predict():
         st.write("Previous Predictions:")
         df_previous_predictions = pd.DataFrame(previous_predictions)
         st.dataframe(df_previous_predictions)
+        csv = df_previous_predictions.to_csv(index=False)
+
+        st.download_button(
+        "Press to Download",
+        csv,
+        "file.csv",
+        "text/csv",
+        key='download-csv'
+        )
+        
 
         # Create a scatter chart of previous predictions
         st.write("Previous Predictions Scatter Chart:")
