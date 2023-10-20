@@ -68,6 +68,14 @@ def set_bg_hack_url():
         .st-au,.st-b8{{
             background-color: #DBE4D2;
         }}
+
+        .st-el{{
+            background-color: #EDEEF2;
+        }}
+
+        .e116k4er1{{
+             background-color: #DBE4D2;
+        }}
          </style>
          """,
          unsafe_allow_html=True
