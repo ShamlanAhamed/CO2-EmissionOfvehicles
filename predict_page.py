@@ -15,6 +15,7 @@ def set_bg_hack_url():
          .stApp {{
             background: url("https://img.freepik.com/premium-photo/toy-green-car-rides-background-with-exhaust-from-birch-leaves-concept-reducing-co2-emissions-from-vehicles_132310-6290.jpg?w=360");
             background-size: cover
+            
          }}
 
         .ezrtsby2{{
@@ -173,6 +174,10 @@ def show_predict():
  
     
     ok = st.button('Click to calculate')
+    
+    st.write('')
+    st.write('')
+    st.write('')
     
     # Create a container to hold previous predictions and graphs
     
