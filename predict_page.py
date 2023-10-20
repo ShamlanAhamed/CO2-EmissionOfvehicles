@@ -3,6 +3,7 @@ import pickle as pk
 import numpy as np
 import pandas as pd
 
+
 #from sklearn.preprocessing import MinMaxScaler
 
 
@@ -12,21 +13,43 @@ def set_bg_hack_url():
          f"""
          <style>
          .stApp {{
-            background: url("");
+            background: url("https://img.freepik.com/premium-photo/toy-green-car-rides-background-with-exhaust-from-birch-leaves-concept-reducing-co2-emissions-from-vehicles_132310-6290.jpg?w=360");
             background-size: cover
          }}
 
-         
-         /*.e1f1d6gn0 {{
-                
-            margin-left: 300px;
-        }}*/
-        
         .ezrtsby2{{
             background-color: rgba(0,0,0,0)
         }}
-
+        
+        div.stButton > button:first-child {{
+            background-color: #c2fbd7; border-radius: 100px;
+            font-weight: bold;
+            box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+            color: black; cursor: pointer;display: inline-block;
+            font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+            padding: 7px 20px;text-align: center;
+            text-decoration: none;transition: all 250ms;
+            border: 0;font-size: 16px;user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }}
+        div.stButton > button:hover{{
+            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+            }}
+        div.stButton{{
+            display: flex;
+            justify-content: center;
+        }}
+        
+        .e1vs0wn30{{
+            display: flex;
+            justify-content: center;
+        }}
          
+         .stDownloadButton{{
+            display: flex;
+            justify-content: center;
+         }}
          </style>
          """,
          unsafe_allow_html=True
@@ -83,7 +106,7 @@ X_train = pd.read_csv('X_train.csv')
 
 def topic():
     #st.markdown("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>", unsafe_allow_html=True)
-    st.markdown("<h1 style='color: green; text-align: center; '>CO2 Emission Prediction</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='color: green; text-align: center; margin-top: -70px '>CO2 Emission Prediction</h1>", unsafe_allow_html=True)
     st.markdown("<h2 style='font-size: 28px; text-align: center;'>We need more info</h2>", unsafe_allow_html=True)
     
 
@@ -111,11 +134,6 @@ def show_predict():
     
     Fuel_types = ('Super petrol', 'Diesel', 'Ethanol', 'Natural gas', 'Petrol')
 
-    
-    #Cylinders_types = (4 ,  6 , 12 ,  8 , 14 , 10 ,  5 , 16 ,  3 )ijk
-
-    # Create a container to hold user input form and predictions
-    st.write("User Input Form")
     
     NameO = st.text_input("Enter the Owner vehicel")
     
@@ -152,21 +170,7 @@ def show_predict():
         
     Fuel_Consumption_Hwy = st.number_input("Fuel Consumption Highway (L/100 km)", min_value=1.0, max_value=30.0, step=0.1)
     
-    m = st.markdown("""
-        <style>
-        div.stButton > button:first-child {
-            background-color: red;
-            color:#ffffff;
-        }
-        div.stButton > button:hover {
-            background-color: #00ff00;
-            color:#ff0000;
-            }
-        div.stButton{
-            display: flex;
-            justify-content: center;
-        }
-        </style>""", unsafe_allow_html=True)
+ 
     
     ok = st.button('Click to calculate')
     
@@ -214,7 +218,6 @@ def show_predict():
         predictions = loaded_model.predict(user_input_for_prediction)
 
         # The 'predictions' variable now contains the predicted values for the user input
-        print(predictions)
 
         #denormalized_userinput = scaler.inverse_transform(predictions)
         #print(denormalized_userinput)
@@ -222,18 +225,11 @@ def show_predict():
         denormalized_prediction = (predictions*426.0)/70 + 96.0
 
 
-        # The 'predictions' variable now contains the predicted values for the user input
-        st.write(f"Predicted CO2 Emission: {denormalized_prediction[0]}")
-        
-        
-        previous_predictions.append({
-            'Make': Make,
-            'CO2 Emission': denormalized_prediction[0],
-            'Name':NameO,
-            'Model Name':ML_model
-        })
+        formatted_prediction = "{:.2f}".format(denormalized_prediction[0])
+        #st.write(f"Predicted CO2 Emission: {formatted_prediction}")
 
-        st.session_state.previous_predictions = previous_predictions
+        st.write("(🟢- Good )" + '  ' * 3 + "(🔵- Medium)" + '  ' * 3 + "(🔴- High)")
+       
 
         # CO2 Emission level (you can replace this with actual data)
         co2_emission = denormalized_prediction[0]
@@ -259,27 +255,41 @@ def show_predict():
         st.write(description)
         
         
-    if previous_predictions:
-        st.write("Previous Predictions:")
-        df_previous_predictions = pd.DataFrame(previous_predictions)
-        st.dataframe(df_previous_predictions)
-        csv = df_previous_predictions.to_csv(index=False)
+        previous_predictions.append({
+            'Make': Make,
+            'CO2 Emission': denormalized_prediction[0],
+            'Name':NameO,
+            'Model Name':ML_model,
+            'category':emission_category
+        })
 
-        st.download_button(
-        "Press to Download",
-        csv,
-        "file.csv",
-        "text/csv",
-        key='download-csv'
-        )
+        st.session_state.previous_predictions = previous_predictions
         
+    show_scatter_chart = st.checkbox("Show Previous Predictions & Scatter Chart")
+    if show_scatter_chart:    
+        if previous_predictions:
+            st.markdown("<h2 style='text-align: center;'>Previous Predictions:</h2>", unsafe_allow_html=True)
+            df_previous_predictions = pd.DataFrame(previous_predictions)
+            st.dataframe(df_previous_predictions)
+            csv = df_previous_predictions.to_csv(index=False)
 
-        # Create a scatter chart of previous predictions
-        st.write("Previous Predictions Scatter Chart:")
-        st.scatter_chart(df_previous_predictions, x='Make', y='CO2 Emission', color='Make')
+            st.download_button(
+            "Press to Download",
+            csv,
+            "file.csv",
+            "text/csv",
+            key='download-csv'
+            )
+            
+
+            # Create a scatter chart of previous predictions
+            st.write("Previous Predictions & Scatter Chart:")
+            st.scatter_chart(df_previous_predictions, x='Make', y='CO2 Emission', color='Make')
         
                         
 show_predict()       
+
+
 
 
 
