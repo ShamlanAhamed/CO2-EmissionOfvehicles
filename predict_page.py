@@ -51,6 +51,12 @@ def set_bg_hack_url():
             display: flex;
             justify-content: center;
          }}
+         .e1nzilvr5{{
+            font-weight: bold;
+            font-family: 'georgia';
+            font-size: 38px;
+   
+         }}
          </style>
          """,
          unsafe_allow_html=True
@@ -82,13 +88,13 @@ preferd_model =('Decision tree Regression','Random Forest regressor' , 'Support 
 
 # Add a sidebar
 with st.sidebar:
-    st.markdown("<h1 style='color: green; text-align: center;  margin-top: -30px;'>CO2 Emission</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='color: green; text-align: center;  margin-top: -30px; font-weight: bold;'>CO2 Emission</h1>", unsafe_allow_html=True)
     
     # Add an image to the sidebar
     st.image("https://png.pngtree.com/png-vector/20220513/ourmid/pngtree-ecological-stop-co2-emissions-sign-on-white-background-png-image_4595665.png", use_column_width=True)
     
     # Add a radio button to select the ML model
-    st.markdown("<h3 style='text-align: center; color: green; margin-bottom: -50px;'>Choose your preferred model:</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; color: green; margin-bottom: -50px; font-weight: bold;'>Choose your preferred model:</h3>", unsafe_allow_html=True)
     ML_model = st.radio("", preferd_model)
     
     if ML_model == 'Support vector Machine':
