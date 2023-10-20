@@ -85,7 +85,6 @@ set_bg_hack_url()
 
 st.markdown("",unsafe_allow_html=True)
 
-##scaler = MinMaxScaler(feature_range=(0, 70)) 
 
 
 
