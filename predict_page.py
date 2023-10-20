@@ -2,6 +2,7 @@ import streamlit as st
 import pickle as pk
 import numpy as np
 import pandas as pd
+
 #from sklearn.preprocessing import MinMaxScaler
 
 
@@ -81,6 +82,7 @@ X_train = pd.read_csv('X_train.csv')
 #normalized_dataq = pd.read_csv('normalized.csv')
 
 def topic():
+    #st.markdown("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>", unsafe_allow_html=True)
     st.markdown("<h1 style='color: green; text-align: center; '>CO2 Emission Prediction</h1>", unsafe_allow_html=True)
     st.markdown("<h2 style='font-size: 28px; text-align: center;'>We need more info</h2>", unsafe_allow_html=True)
 
@@ -111,15 +113,19 @@ def show_predict():
     
     #Cylinders_types = (4 ,  6 , 12 ,  8 , 14 , 10 ,  5 , 16 ,  3 )ijk
 
+    # Create a container to hold user input form and predictions
+    st.write("User Input Form")
     
-
+    NameO = st.text_input("Enter the Owner vehicel")
+    
     Make = st.selectbox("Make(Brand)", Makes)
 
     Transmission = st.selectbox("Gear Transmission", Transmissions)
-    
+        
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)    
     Fuel_type_radio = st.radio("Type of fuel used (Radio Buttons)", Fuel_types)
 
+    
     if Fuel_type_radio == 'Super petrol':
         Fuel_type_radio = 'Z'
 
@@ -135,17 +141,21 @@ def show_predict():
     elif Fuel_type_radio == 'Petrol':
         Fuel_type_radio = 'X'        
 
-    
+        
     Cylinders_type = st.slider("Number of cylinders used", 3, 16, step=1)
 
-    # Add a number input box
+        # Add a number input box
     Engine_Size = st.number_input("Enter Engine Size in Liters", min_value=0.0, max_value=10.0, step=0.1)
-    
+        
     Fuel_Consumption_City = st.number_input("Fuel Consumption City (L/100 km)", min_value=1.0, max_value=40.0, step=0.1)
-    
+        
     Fuel_Consumption_Hwy = st.number_input("Fuel Consumption Highway (L/100 km)", min_value=1.0, max_value=30.0, step=0.1)
     
     ok = st.button('Click to calculate')
+    
+    # Create a container to hold previous predictions and graphs
+    
+    previous_predictions = st.session_state.get('previous_predictions', [])
     
     if ok:
         # Create a dictionary with user input
@@ -197,9 +207,59 @@ def show_predict():
 
         # The 'predictions' variable now contains the predicted values for the user input
         st.write(f"Predicted CO2 Emission: {denormalized_prediction[0]}")
+        
+        
+        previous_predictions.append({
+            'Make': Make,
+            'CO2 Emission': denormalized_prediction[0],
+            'Name':NameO
+        })
 
+        st.session_state.previous_predictions = previous_predictions
+        
+        # CO2 Emission level (you can replace this with actual data)
 
+        # CO2 Emission level (you can replace this with actual data)
+        co2_emission = denormalized_prediction[0]
+
+        # Determine the emission category
+        if co2_emission < 160:
+            emission_category = "Good"
+            icon = "🟢"  # Green icon
+            description = "This emission level is good for the environment."
+        elif 160 <= co2_emission <= 255:
+            emission_category = "Medium"
+            icon = "🔵"  # Blue icon
+            description = "This emission level is considered medium for the environment."
+        else:
+            emission_category = "High"
+            icon = "🔴"  # Red icon
+            description = "This emission level is high and has a significant impact on the environment."
+
+        # Display CO2 Emission and category with colored icon
+        st.markdown(f"<h3>{icon} CO2 Emission: {co2_emission} (Category: {emission_category})</h3>", unsafe_allow_html=True)
+
+        # Display the description
+        st.write(description)
+        
+        
+    if previous_predictions:
+        st.write("Previous Predictions:")
+        df_previous_predictions = pd.DataFrame(previous_predictions)
+        st.dataframe(df_previous_predictions)
+
+        # Create a scatter chart of previous predictions
+        st.write("Previous Predictions Scatter Chart:")
+        st.scatter_chart(df_previous_predictions, x='Make', y='CO2 Emission', color='Make')
+        
+                        
 show_predict()       
+
+
+
+
+
+
 
 
 
