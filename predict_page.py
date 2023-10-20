@@ -13,8 +13,8 @@ def set_bg_hack_url():
          f"""
          <style>
          .stApp {{
-            background: url("https://img.freepik.com/premium-photo/toy-green-car-rides-background-with-exhaust-from-birch-leaves-concept-reducing-co2-emissions-from-vehicles_132310-6290.jpg?w=360");
-            background-size: cover
+            background-color:#EDEEF2;
+            background-size: cover;
             
          }}
 
@@ -52,13 +52,22 @@ def set_bg_hack_url():
             justify-content: center;
          }}
          .e1nzilvr5{{
-            font-weight: bold;
-            font-family: 'georgia';
+            font-weight: bold ;
+            font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;;
             font-size: 38px;
          }}
 
-        
+        .eczjsme3{{
+            background-color: #B3BFAB;
+            st-ae
+        }}
+        .st-i0{{
+            background-color: #DBE4D2;
+        }}
 
+        .st-au,.st-b8{{
+            background-color: #DBE4D2;
+        }}
          </style>
          """,
          unsafe_allow_html=True
