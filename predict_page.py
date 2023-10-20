@@ -55,8 +55,10 @@ def set_bg_hack_url():
             font-weight: bold;
             font-family: 'georgia';
             font-size: 38px;
-   
          }}
+
+        
+
          </style>
          """,
          unsafe_allow_html=True
