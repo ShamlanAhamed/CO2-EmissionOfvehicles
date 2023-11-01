@@ -89,16 +89,16 @@ st.markdown("",unsafe_allow_html=True)
 
 
 #loading all the saved model 
-with open('svm_model.pkl', 'rb') as model_file:
+with open('models/svm_model.pkl', 'rb') as model_file:
    loaded_model_svm = pk.load(model_file)
 
-with open('random_forst_model.pkl', 'rb') as model_file:
+with open('models/random_forst_model.pkl', 'rb') as model_file:
    loaded_model_rf = pk.load(model_file)
 
-with open('leaniermodel.pkl', 'rb') as model_file:
+with open('models/leaniermodel.pkl', 'rb') as model_file:
    loaded_model_lr = pk.load(model_file)
 
-with open('Decisiontree.pkl', 'rb') as model_file:
+with open('models/Decisiontree.pkl', 'rb') as model_file:
    loaded_model_dt = pk.load(model_file)
 
 #data = loaded_model_svm
