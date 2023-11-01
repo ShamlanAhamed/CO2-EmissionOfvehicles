@@ -126,7 +126,7 @@ with st.sidebar:
 
 
 # Define X_train globally
-X_train = pd.read_csv('X_train.csv')
+X_train = pd.read_csv('dataset/X_train.csv')
 #normalized_dataq = pd.read_csv('normalized.csv')
 
 def topic():
@@ -254,7 +254,7 @@ def show_predict():
         denormalized_prediction = (predictions*426.0)/70 + 96.0
 
 
-        formatted_prediction = "{:.2f}".format(denormalized_prediction[0])
+        formatted_prediction ="{:.2f}".format(float(denormalized_prediction[0]))
         #st.write(f"Predicted CO2 Emission: {formatted_prediction}")
 
         st.write("(🟢- Good )" + '  ' * 3 + "(🔵- Medium)" + '  ' * 3 + "(🔴- High)")
