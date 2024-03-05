@@ -113,7 +113,7 @@ with st.sidebar:
     
     # Add a radio button to select the ML model
     st.markdown("<h3 style='text-align: center; color: green; margin-bottom: -50px; font-weight: bold;'>Choose your preferred model:</h3>", unsafe_allow_html=True)
-    ML_model = st.radio("", preferd_model)
+    ML_model = st.radio(" ", preferd_model)
     
     if ML_model == 'Support vector Machine':
         loaded_model = loaded_model_svm
@@ -142,8 +142,7 @@ topic()
 def show_predict():
     
 
- 
-    
+
     Makes= ('ACURA', 'ALFA ROMEO', 'ASTON MARTIN', 'AUDI', 'BENTLEY', 'BMW',
        'BUGATTI', 'BUICK', 'CADILLAC', 'CHEVROLET', 'CHRYSLER', 'DODGE',
        'FIAT', 'FORD', 'GENESIS', 'GMC', 'HONDA', 'HYUNDAI', 'INFINITI',
@@ -251,7 +250,7 @@ def show_predict():
         #denormalized_userinput = scaler.inverse_transform(predictions)
         #print(denormalized_userinput)
 
-        denormalized_prediction = (predictions*426.0)/70 + 96.0
+        denormalized_prediction = np.round((predictions * 426.0) / 70 + 96.0, 3)
 
 
         formatted_prediction ="{:.2f}".format(float(denormalized_prediction[0]))
