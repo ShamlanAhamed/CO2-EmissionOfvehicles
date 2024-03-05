@@ -277,7 +277,7 @@ def show_predict():
             description = "This emission level is high and has a significant impact on the environment."
 
         # Display CO2 Emission and category with colored icon
-        st.markdown(f"<h3>{icon} CO2 Emission: {co2_emission} (Category: {emission_category})</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3>{icon} CO2 Emission(g/km): {co2_emission} (Category: {emission_category})</h3>", unsafe_allow_html=True)
 
         # Display the description
         st.write(description)
