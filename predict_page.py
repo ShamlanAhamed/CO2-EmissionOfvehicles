@@ -231,9 +231,11 @@ def show_predict():
         user_input_for_prediction = pd.DataFrame(0, index=[0], columns=X_train.columns)
 
         # Fill in the columns that match based on user input
+        # Fill in the columns that match based on user input
         for col in user_input_encoded.columns:
             if col in user_input_for_prediction.columns:
-                user_input_for_prediction.loc[0, col] = user_input_encoded[col].iloc[0]
+                user_input_for_prediction.loc[0, col] = bool(user_input_encoded[col].iloc[0])
+
 
         # Calculate 'Fuel Consumption Comb (L/100 km)' based on 'Fuel Consumption City (L/100 km)' and 'Fuel Consumption Hwy (L/100 km)'
         user_input_for_prediction['Fuel Consumption Comb (L/100 km)'] = (0.55 * user_input_for_prediction['Fuel Consumption City (L/100 km)'] +
@@ -251,10 +253,6 @@ def show_predict():
         #print(denormalized_userinput)
 
         denormalized_prediction = np.round((predictions * 426.0) / 70 + 96.0, 3)
-
-
-        formatted_prediction ="{:.2f}".format(float(denormalized_prediction[0]))
-        #st.write(f"Predicted CO2 Emission: {formatted_prediction}")
 
         st.write("(🟢- Good )" + '  ' * 3 + "(🔵- Medium)" + '  ' * 3 + "(🔴- High)")
        
